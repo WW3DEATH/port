@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creations — NEXUS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Oswald','sans-serif']},colors:{neon:{cyan:'#00F0FF',purple:'#A855F7',pink:'#EC4899',blue:'#3B82F6'},dark:{900:'#030712',800:'#0A0F1E',700:'#111827',600:'#1E293B'}}}}}</script>
+</head>
+<body class="noise grid-bg">
+  <canvas id="particles-canvas"></canvas>
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-sm">N</div><span class="font-display text-xl font-semibold tracking-tight">NEXUS</span></a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Home</a>
+        <a href="about.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">About</a>
+        <a href="creations.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Creations</a>
+        <a href="skills.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Skills</a>
+        <a href="contact.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Contact</a>
+      </div>
+      <div id="nav-actions" class="flex items-center gap-3"></div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-6 space-y-3">
+      <a href="index.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Home</a>
+      <a href="about.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">About</a>
+      <a href="creations.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Creations</a>
+      <a href="skills.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Skills</a>
+      <a href="contact.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Contact</a>
+    </div>
+  </nav>
+
+  <div id="auth-modal" class="modal-overlay" onclick="closeAuthModal(event)">
+    <div class="modal-content w-full max-w-md mx-4 glow-border p-8" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6"><h3 class="font-display text-2xl font-bold uppercase tracking-tight">Account</h3><button onclick="closeAuthModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white transition-all"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+      <div class="flex gap-2 p-1 rounded-xl bg-white/5 mb-6">
+        <button class="auth-tab active-tab flex-1" data-tab="login" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab flex-1" data-tab="signup" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <div id="auth-signup-fields" class="hidden"><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Full Name</label><input type="text" id="auth-name" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Email</label><input type="email" id="auth-email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Password</label><input type="password" id="auth-password" required minlength="6" placeholder="Min 6 characters" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <p id="auth-error" class="text-red-400 text-sm min-h-[1.25rem]"></p>
+        <button type="submit" id="auth-submit-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <section class="page-section relative z-10 py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-neon-cyan mb-4 block">Portfolio</span>
+        <h2 class="font-display text-4xl sm:text-6xl font-bold tracking-tight uppercase leading-[0.95] mb-4">My <span class="glow-text">Creations</span></h2>
+        <p class="text-neutral-400 max-w-xl mx-auto">A curated collection of websites and digital experiences I've designed and developed.</p>
+      </div>
+
+      <!-- Admin Upload Button -->
+      <div class="reveal stagger-1 flex justify-center mb-8">
+        <button id="admin-upload-btn" onclick="openUploadModal()" style="display:none" class="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all">
+          <i data-lucide="plus" class="w-4 h-4"></i> New Project
+        </button>
+      </div>
+
+      <div class="reveal stagger-1 flex flex-wrap items-center justify-center gap-3 mb-12">
+        <button onclick="filterProjects('all')" class="filter-btn active px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300" data-filter="all">All</button>
+        <button onclick="filterProjects('landing')" class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300" data-filter="landing">Landing Pages</button>
+        <button onclick="filterProjects('webapp')" class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300" data-filter="webapp">Web Apps</button>
+        <button onclick="filterProjects('ecom')" class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300" data-filter="ecom">E-Commerce</button>
+        <button onclick="filterProjects('experimental')" class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300" data-filter="experimental">Experimental</button>
+      </div>
+
+      <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="empty-state" class="hidden text-center py-20">
+        <i data-lucide="folder-open" class="w-16 h-16 text-neutral-700 mx-auto mb-4"></i>
+        <p class="text-neutral-500 text-lg">No projects in this category yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upload Modal -->
+  <div id="upload-modal" class="modal-overlay" onclick="closeUploadModal(event)">
+    <div class="modal-content w-full max-w-lg mx-4 glow-border p-8" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-8">
+        <div><h3 class="font-display text-2xl font-bold uppercase tracking-tight">Upload Project</h3><p class="text-neutral-500 text-sm mt-1">Add a new creation to your portfolio</p></div>
+        <button onclick="closeUploadModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="upload-form" onsubmit="handleUpload(event)" class="space-y-5">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Project Image</label>
+          <div id="drop-zone" class="relative border-2 border-dashed border-white/10 rounded-2xl p-8 text-center cursor-pointer hover:border-neon-cyan/30 hover:bg-neon-cyan/[0.02] transition-all" onclick="document.getElementById('file-input').click()">
+            <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+            <div id="drop-content"><i data-lucide="image-plus" class="w-10 h-10 text-neutral-600 mx-auto mb-3"></i><p class="text-neutral-400 text-sm">Click or drag to upload</p><p class="text-neutral-600 text-xs mt-1">PNG, JPG up to 10MB</p></div>
+            <div id="preview-content" class="hidden"><img id="image-preview" src="" alt="Preview" class="w-32 h-24 object-cover rounded-xl mx-auto mb-2"><p id="file-name" class="text-neutral-400 text-sm"></p></div>
+          </div>
+        </div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Project Name</label><input type="text" id="proj-name" required placeholder="My Awesome Website" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Category</label><select id="proj-category" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-neon-cyan/40 transition-all appearance-none"><option value="landing" class="bg-dark-800">Landing Page</option><option value="webapp" class="bg-dark-800">Web App</option><option value="ecom" class="bg-dark-800">E-Commerce</option><option value="experimental" class="bg-dark-800">Experimental</option></select></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Description</label><textarea id="proj-desc" rows="3" required placeholder="Brief description..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all resize-none"></textarea></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Tech Stack (comma separated)</label><input type="text" id="proj-tags" placeholder="React, Tailwind, Node.js" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Live URL (optional)</label><input type="url" id="proj-url" placeholder="https://myproject.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <button type="submit" id="upload-submit-btn" class="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_40px_rgba(0,240,255,0.3)] transition-all"><i data-lucide="rocket" class="w-4 h-4"></i> Publish Project</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="modal-overlay" onclick="closeDetailModal(event)">
+    <div class="modal-content w-full max-w-3xl mx-4 glow-border overflow-hidden" onclick="event.stopPropagation()">
+      <div class="relative h-64 sm:h-80 overflow-hidden">
+        <img id="detail-image" src="" alt="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/50 to-transparent"></div>
+        <button onclick="closeDetailModal()" class="absolute top-4 right-4 w-10 h-10 rounded-xl bg-dark-900/80 backdrop-blur border border-white/10 flex items-center justify-center text-white hover:border-white/20 transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-8">
+        <div id="detail-tags" class="flex flex-wrap gap-2 mb-4"></div>
+        <h3 id="detail-title" class="font-display text-3xl font-bold uppercase tracking-tight mb-3"></h3>
+        <p id="detail-desc" class="text-neutral-400 leading-relaxed mb-6"></p>
+        <div class="flex flex-wrap gap-3">
+          <a id="detail-link" href="#" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all"><i data-lucide="external-link" class="w-4 h-4"></i> Live Demo</a>
+          <button id="detail-delete-btn" style="display:none" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-red-500/30 text-red-400 font-semibold text-sm tracking-wider uppercase hover:bg-red-500/10 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="relative z-10 border-t border-white/5 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-xs">N</div><span class="font-display text-lg font-semibold">NEXUS</span></a>
+      <p class="text-neutral-600 text-sm">© 2025 NEXUS Portfolio.</p>
+      <div class="flex items-center gap-4">
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="github" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </footer>
+  <div id="toast" class="toast flex items-center gap-3"><div id="toast-icon" class="w-8 h-8 rounded-lg flex items-center justify-center"></div><span id="toast-text" class="text-sm font-medium"></span></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/creations.js"></script>
+</body>
+</html>

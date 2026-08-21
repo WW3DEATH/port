@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — NEXUS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family/Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Oswald','sans-serif']},colors:{neon:{cyan:'#00F0FF',purple:'#A855F7',pink:'#EC4899',blue:'#3B82F6'},dark:{900:'#030712',800:'#0A0F1E',700:'#111827',600:'#1E293B'}}}}}</script>
+  <style>
+    .admin-sidebar a.active-section{background:rgba(0,240,255,0.1);color:#00F0FF;border-right:2px solid #00F0FF;}
+    .admin-section{display:none}.admin-section.active{display:block;}
+    .ai{width:100%;padding:.75rem 1rem;border-radius:.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:.875rem;outline:none;transition:all .3s;}
+    .ai:focus{border-color:rgba(0,240,255,0.4);background:rgba(255,255,255,0.07);}
+    .ai::placeholder{color:#525252;}textarea.ai{resize:vertical;min-height:80px;}
+    .al{display:block;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#a3a3a3;margin-bottom:.5rem;}
+    .sb{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:.75rem;background:linear-gradient(to right,#00F0FF,#3B82F6);color:#030712;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;border:none;cursor:pointer;transition:all .3s;}
+    .sb:hover{box-shadow:0 0 30px rgba(0,240,255,0.3);}.sb:disabled{opacity:.5;cursor:not-allowed;}
+    .ur{display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;align-items:center;padding:1rem 1.25rem;border-radius:1rem;border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);margin-bottom:.75rem;}
+    .spin{animation:spin 1s linear infinite}@keyframes spin{100%{transform:rotate(360deg)}}
+    @media(max-width:768px){.admin-sidebar{display:none!important}.admin-sidebar.mob{display:flex!important;position:fixed;top:0;left:0;bottom:0;z-index:100;width:260px;background:#0A0F1E;border-right:1px solid rgba(255,255,255,0.05);padding:1.5rem;flex-direction:column;gap:.25rem;}}
+  </style>
+</head>
+<body class="noise grid-bg" style="background:#030712">
+  <div class="fixed top-0 left-0 right-0 z-50 bg-dark-900/90 backdrop-blur border-b border-white/5">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-3">
+        <button id="sidebar-toggle" class="md:hidden w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-neutral-400"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <a href="index.html" class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-xs">N</div><span class="font-display text-lg font-semibold">NEXUS</span><span class="text-xs font-bold text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/20 px-2 py-0.5 rounded-md ml-1 uppercase">Admin</span></a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="hidden sm:text-sm text-neutral-400 hover:text-white transition-colors">View Site →</a>
+        <a href="creations.html" class="hidden sm:text-sm text-neutral-400 hover:text-white transition-colors">Upload →</a>
+        <a href="admin-messages.html" class="hidden sm:text-sm text-neutral-400 hover:text-white transition-colors">Messages →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex pt-14 min-h-screen">
+    <aside class="admin-sidebar hidden md:flex flex-col w-60 shrink-0 border-r border-white/5 p-4 gap-1 fixed top-14 bottom-0 left-0 overflow-y-auto">
+      <a href="#" class="admin-sidebar-link active-section flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="site">🌐 Site Settings</a>
+      <a href="#" class="admin-sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="hero">🎨 Hero Section</a>
+      <a href="#" class="admin-sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="about">👤 About & Stats</a>
+      <a href="#" class="admin-sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="skills">💪 Skills</a>
+      <a href="#" class="admin-sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="social">🔗 Social Links</a>
+      <a href="#" class="admin-sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="contact">📧 Contact Info</a>
+      <a href="#" class="admin-sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="timeline">📅 Timeline</a>
+      <div class="border-t border-white/5 my-3"></div>
+      <a href="#" class="admin-sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5" data-section="users">👥 Users</a>
+      <a href="admin-messages.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5">💬 Messages</a>
+      <div class="mt-auto pt-4 border-t border-white/5"><a href="index.html" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-neutral-500 hover:text-white hover:bg-white/5">← Logout & View Site</a></div>
+    </aside>
+
+    <main class="flex-1 md:ml-60 p-6 md:p-10">
+      <div id="admin-access-denied" class="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <div class="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h2 class="font-display text-3xl font-bold uppercase mb-3">Admin Only</h2>
+        <p class="text-neutral-500 mb-6">You need admin access.</p>
+        <button onclick="openAuthModal('login')" class="sb">Login</button>
+      </div>
+
+      <div id="admin-content" class="hidden max-w-4xl">
+
+        <!-- SITE -->
+        <div class="admin-section active" id="section-site">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">🌐 Site Settings</h2>
+          <div class="glow-border p-6 space-y-5">
+            <div><label class="al">Site Name</label><input type="text" id="set-siteName" class="ai" placeholder="NEXUS"></div>
+            <button onclick="saveSection('site')" class="sb" id="save-site">💾 Save Site Settings</button>
+          </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="admin-section" id="section-hero">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">🎨 Hero Section</h2>
+          <div class="glow-border p-6 space-y-5">
+            <div><label class="al">Badge Text</label><input type="text" id="set-hero-badge" class="ai"></div>
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div><label class="al">Title Line 1</label><input type="text" id="set-hero-line1" class="ai"></div>
+              <div><label class="al">Title Line 2</label><input type="text" id="set-hero-line2" class="ai"></div>
+              <div><label class="al">Title Line 3</label><input type="text" id="set-hero-line3" class="ai"></div>
+            </div>
+            <div><label class="al">Subtitle</label><textarea id="set-hero-subtitle" class="ai"></textarea></div>
+            <button onclick="saveSection('hero')" class="sb" id="save-hero">💾 Save Hero</button>
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="admin-section" id="section-about">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">👤 About & Stats</h2>
+          <div class="glow-border p-6 space-y-5">
+            <div><label class="al">Bio Paragraph 1</label><textarea id="set-about-bio1" class="ai" rows="3"></textarea></div>
+            <div><label class="al">Bio Paragraph 2</label><textarea id="set-about-bio2" class="ai" rows="3"></textarea></div>
+            <div class="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+              <div class="flex items-center justify-between mb-4"><p class="al" style="margin:0">Statistics</p><p class="text-xs text-neutral-600">Projects: <span id="admin-project-count" class="text-neon-cyan font-bold">0</span> (auto)</p></div>
+              <div class="grid grid-cols-2 gap-4">
+                <div><label class="al">Clients</label><input type="number" id="set-about-clients" class="ai" min="0" value="0"><p class="text-[10px] text-neutral-600 mt-1">Manual count</p></div>
+                <div><label class="al">Years of Experience</label><input type="number" id="set-about-years" class="ai" min="0" value="0"><p class="text-[10px] text-neutral-600 mt-1">Manual count</p></div>
+              </div>
+            </div>
+            <button onclick="saveSection('about')" class="sb" id="save-about">💾 Save About & Stats</button>
+          </div>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="admin-section" id="section-skills">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">💪 Skills</h2>
+          <div class="space-y-4" id="skills-editor"></div>
+          <button onclick="saveSection('skills')" class="sb mt-6" id="save-skills">💾 Save Skills</button>
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="admin-section" id="section-social">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">🔗 Social Links</h2>
+          <div class="glow-border p-6 space-y-5">
+            <div><label class="al">GitHub URL</label><input type="url" id="set-social-github" class="ai" placeholder="https://github.com/..."></div>
+            <div><label class="al">Twitter / X URL</label><input type="url" id="set-social-twitter" class="ai" placeholder="https://twitter.com/..."></div>
+            <div><label class="al">LinkedIn URL</label><input type="url" id="set-social-linkedin" class="ai" placeholder="https://linkedin.com/in/..."></div>
+            <div><label class="al">Dribbble URL</label><input type="url" id="set-social-dribbble" class="ai" placeholder="https://dribbble.com/..."></div>
+            <button onclick="saveSection('social')" class="sb" id="save-social">💾 Save Social Links</button>
+          </div>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="admin-section" id="section-contact">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">📧 Contact Info</h2>
+          <div class="glow-border p-6 space-y-5">
+            <div><label class="al">Email</label><input type="email" id="set-contact-email" class="ai" placeholder="hello@nexusdev.com"></div>
+            <div><label class="al">Location</label><input type="text" id="set-contact-location" class="ai" placeholder="San Francisco, CA"></div>
+            <div><label class="al">Availability</label><input type="text" id="set-contact-availability" class="ai" placeholder="Open for freelance projects"></div>
+            <button onclick="saveSection('contact')" class="sb" id="save-contact">💾 Save Contact Info</button>
+          </div>
+        </div>
+
+        <!-- TIMELINE -->
+        <div class="admin-section" id="section-timeline">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">📅 Timeline</h2>
+          <div class="glow-border p-6 space-y-5" id="timeline-editor"></div>
+          <button onclick="saveSection('timeline')" class="sb mt-4" id="save-timeline">💾 Save Timeline</button>
+        </div>
+
+        <!-- USERS -->
+        <div class="admin-section" id="section-users">
+          <h2 class="font-display text-2xl font-bold uppercase tracking-tight mb-6">👥 Users</h2>
+          <div id="users-list"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="auth-modal" class="modal-overlay" onclick="closeAuthModal(event)">
+    <div class="modal-content w-full max-w-md mx-4 glow-border p-8" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6"><h3 class="font-display text-2xl font-bold uppercase tracking-tight">Account</h3><button onclick="closeAuthModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="flex gap-2 p-1 rounded-xl bg-white/5 mb-6"><button class="auth-tab active-tab flex-1" data-tab="login" onclick="switchAuthTab('login')">Sign In</button><button class="auth-tab flex-1" data-tab="signup" onclick="switchAuthTab('signup')">Sign Up</button></div>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <div id="auth-signup-fields" class="hidden"><label class="al">Full Name</label><input type="text" id="auth-name" class="ai" placeholder="John Doe"></div>
+        <div id="auth-login-fields"><label class="al">Email</label><input type="email" id="auth-email" required class="ai" placeholder="you@example.com"></div>
+        <div><label class="al">Password</label><input type="password" id="auth-password" required minlength="6" class="ai" placeholder="Min 6 characters"></div>
+        <p id="auth-error" class="text-red-400 text-sm min-h-[1.25rem]"></p>
+        <button type="submit" id="auth-submit-btn" class="sb w-full justify-center">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast flex items-center gap-3"><div id="toast-icon" class="w-8 h-8 rounded-lg flex items-center justify-center"></div><span id="toast-text" class="text-sm font-medium"></span></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

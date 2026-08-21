@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — AI Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Oswald','sans-serif']},colors:{neon:{cyan:'#00F0FF',purple:'#A855F7',pink:'#EC4899',blue:'#3B82F6'},dark:{900:'#030712',800:'#0A0F1E',700:'#111827',600:'#1E293B'}}}}}</script>
+</head>
+<body class="noise grid-bg">
+  <canvas id="particles-canvas"></canvas>
+
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-sm">N</div>
+        <span class="site-name font-display text-xl font-semibold tracking-tight">NEXUS</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Home</a>
+        <a href="about.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">About</a>
+        <a href="creations.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Creations</a>
+        <a href="skills.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Skills</a>
+        <a href="contact.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Contact</a>
+      </div>
+      <div id="nav-actions" class="flex items-center gap-3"></div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-6 space-y-3">
+      <a href="index.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Home</a>
+      <a href="about.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">About</a>
+      <a href="creations.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Creations</a>
+      <a href="skills.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Skills</a>
+      <a href="contact.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Contact</a>
+    </div>
+  </nav>
+
+  <!-- AUTH MODAL -->
+  <div id="auth-modal" class="modal-overlay" onclick="closeAuthModal(event)">
+    <div class="modal-content w-full max-w-md mx-4 glow-border p-8" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-display text-2xl font-bold uppercase tracking-tight">Account</h3>
+        <button onclick="closeAuthModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white transition-all">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="flex gap-2 p-1 rounded-xl bg-white/5 mb-6">
+        <button class="auth-tab active-tab flex-1" data-tab="login" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab flex-1" data-tab="signup" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <div id="auth-signup-fields" class="hidden">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Full Name</label>
+          <input type="text" id="auth-name" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all">
+        </div>
+        <div id="auth-login-fields">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Email</label>
+          <input type="email" id="auth-email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Password</label>
+          <input type="password" id="auth-password" required minlength="6" placeholder="Min 6 characters" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all">
+        </div>
+        <p id="auth-error" class="text-red-400 text-sm min-h-[1.25rem]"></p>
+        <button type="submit" id="auth-submit-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="relative min-h-screen flex items-center justify-center px-6 pt-20">
+    <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-neon-cyan/10 rounded-full blur-[150px] float"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-neon-purple/10 rounded-full blur-[120px] float-delay"></div>
+    <div class="relative z-10 text-center max-w-5xl mx-auto">
+      <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5 mb-8">
+        <span class="w-2 h-2 rounded-full bg-neon-cyan animate-pulse"></span>
+        <span class="hero-badge text-xs font-medium text-neon-cyan tracking-wider uppercase">AI-Powered Portfolio</span>
+      </div>
+      <h1 class="reveal stagger-1 font-display text-5xl sm:text-7xl lg:text-[7rem] font-bold leading-[0.9] tracking-tight uppercase mb-6">
+        <span id="hero-line-1" class="block text-white">I Build</span>
+        <span id="hero-line-2" class="block glow-text">Digital</span>
+        <span id="hero-line-3" class="block text-white">Experiences<span class="cursor text-neon-cyan">_</span></span>
+      </h1>
+      <p id="hero-subtitle" class="reveal stagger-2 text-neutral-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">Web developer crafting intelligent, immersive websites that push the boundaries of what's possible on the web.</p>
+      <div class="reveal stagger-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="creations.html" class="group flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_40px_rgba(0,240,255,0.3)] transition-all">View Creations <i data-lucide="arrow-down-right" class="w-4 h-4"></i></a>
+        <a href="about.html" class="group flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/10 bg-white/5 text-white font-semibold text-sm tracking-wider uppercase hover:border-neon-purple/40 hover:bg-neon-purple/5 transition-all"><i data-lucide="user" class="w-4 h-4"></i> About Me</a>
+      </div>
+      <div class="reveal stagger-4 mt-16 flex flex-col items-center gap-2">
+        <span class="text-xs text-neutral-600 tracking-widest uppercase">Scroll to explore</span>
+        <div class="w-6 h-10 rounded-full border border-white/10 flex items-start justify-center p-1.5"><div class="w-1.5 h-3 rounded-full bg-neon-cyan animate-bounce"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="relative z-10 py-8 border-y border-white/5 overflow-hidden">
+    <div class="marquee flex whitespace-nowrap">
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">Web Development</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-cyan/10">★</span>
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">UI/UX Design</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-purple/10">★</span>
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">AI Integration</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-pink/10">★</span>
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">Creative Coding</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-cyan/10">★</span>
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">Web Development</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-purple/10">★</span>
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">UI/UX Design</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-cyan/10">★</span>
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">AI Integration</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-pink/10">★</span>
+      <span class="mx-8 text-2xl font-display font-bold uppercase text-white/5">Creative Coding</span><span class="mx-8 text-2xl font-display font-bold uppercase text-neon-cyan/10">★</span>
+    </div>
+  </div>
+
+  <section class="relative z-10 py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-neon-cyan mb-4 block">Explore</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-tight uppercase leading-[0.95]">Quick <span class="glow-text">Navigation</span></h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <a href="about.html" class="reveal stagger-1 glow-border card-hover p-6 group block"><div class="w-12 h-12 rounded-2xl bg-neon-cyan/10 flex items-center justify-center mb-4 group-hover:bg-neon-cyan/20 transition-colors"><i data-lucide="user" class="w-6 h-6 text-neon-cyan"></i></div><h3 class="font-bold text-lg mb-2 group-hover:text-neon-cyan transition-colors">About Me</h3><p class="text-neutral-500 text-sm leading-relaxed">Learn about my journey and experience.</p></a>
+        <a href="creations.html" class="reveal stagger-2 glow-border card-hover p-6 group block"><div class="w-12 h-12 rounded-2xl bg-neon-purple/10 flex items-center justify-center mb-4 group-hover:bg-neon-purple/20 transition-colors"><i data-lucide="layout-grid" class="w-6 h-6 text-neon-purple"></i></div><h3 class="font-bold text-lg mb-2 group-hover:text-neon-purple transition-colors">Creations</h3><p class="text-neutral-500 text-sm leading-relaxed">Browse my portfolio of websites.</p></a>
+        <a href="skills.html" class="reveal stagger-3 glow-border card-hover p-6 group block"><div class="w-12 h-12 rounded-2xl bg-neon-pink/10 flex items-center justify-center mb-4 group-hover:bg-neon-pink/20 transition-colors"><i data-lucide="cpu" class="w-6 h-6 text-neon-pink"></i></div><h3 class="font-bold text-lg mb-2 group-hover:text-neon-pink transition-colors">Skills</h3><p class="text-neutral-500 text-sm leading-relaxed">Technologies and tools I use.</p></a>
+        <a href="contact.html" class="reveal stagger-4 glow-border card-hover p-6 group block"><div class="w-12 h-12 rounded-2xl bg-neon-blue/10 flex items-center justify-center mb-4 group-hover:bg-neon-blue/20 transition-colors"><i data-lucide="mail" class="w-6 h-6 text-neon-blue"></i></div><h3 class="font-bold text-lg mb-2 group-hover:text-neon-blue transition-colors">Contact</h3><p class="text-neutral-500 text-sm leading-relaxed">Have a project? Let's talk.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative z-10 border-t border-white/5 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-xs">N</div><span class="site-name font-display text-lg font-semibold">NEXUS</span></a>
+      <p class="text-neutral-600 text-sm">© 2025 NEXUS Portfolio.</p>
+      <div class="flex items-center gap-4">
+        <a href="#" class="social-github w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="github" class="w-4 h-4"></i></a>
+        <a href="#" class="social-twitter w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+        <a href="#" class="social-linkedin w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+        <a href="#" class="social-dribbble w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="dribbble" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast flex items-center gap-3"><div id="toast-icon" class="w-8 h-8 rounded-lg flex items-center justify-center"></div><span id="toast-text" class="text-sm font-medium"></span></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/site-data.js"></script>
+</body>
+</html>

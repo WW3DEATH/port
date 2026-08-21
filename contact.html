@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — NEXUS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Oswald','sans-serif']},colors:{neon:{cyan:'#00F0FF',purple:'#A855F7',pink:'#EC4899',blue:'#3B82F6'},dark:{900:'#030712',800:'#0A0F1E',700:'#111827',600:'#1E293B'}}}}}</script>
+</head>
+<body class="noise grid-bg">
+  <canvas id="particles-canvas"></canvas>
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-sm">N</div><span class="font-display text-xl font-semibold tracking-tight">NEXUS</span></a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Home</a>
+        <a href="about.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">About</a>
+        <a href="creations.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Creations</a>
+        <a href="skills.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Skills</a>
+        <a href="contact.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Contact</a>
+      </div>
+      <div id="nav-actions" class="flex items-center gap-3"></div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-6 space-y-3">
+      <a href="index.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Home</a>
+      <a href="about.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">About</a>
+      <a href="creations.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Creations</a>
+      <a href="skills.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Skills</a>
+      <a href="contact.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Contact</a>
+    </div>
+  </nav>
+
+  <div id="auth-modal" class="modal-overlay" onclick="closeAuthModal(event)">
+    <div class="modal-content w-full max-w-md mx-4 glow-border p-8" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6"><h3 class="font-display text-2xl font-bold uppercase tracking-tight">Account</h3><button onclick="closeAuthModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white transition-all"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+      <div class="flex gap-2 p-1 rounded-xl bg-white/5 mb-6"><button class="auth-tab active-tab flex-1" data-tab="login" onclick="switchAuthTab('login')">Sign In</button><button class="auth-tab flex-1" data-tab="signup" onclick="switchAuthTab('signup')">Sign Up</button></div>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <div id="auth-signup-fields" class="hidden"><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Full Name</label><input type="text" id="auth-name" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Email</label><input type="email" id="auth-email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Password</label><input type="password" id="auth-password" required minlength="6" placeholder="Min 6 characters" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <p id="auth-error" class="text-red-400 text-sm min-h-[1.25rem]"></p>
+        <button type="submit" id="auth-submit-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <section class="page-section relative z-10 py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-neon-cyan mb-4 block">Get In Touch</span>
+        <h2 class="font-display text-4xl sm:text-6xl font-bold tracking-tight uppercase leading-[0.95] mb-4">Let's <span class="glow-text">Connect</span></h2>
+        <p class="text-neutral-400 max-w-xl mx-auto">Have a project in mind? Let's build something extraordinary together.</p>
+      </div>
+      <div class="grid lg:grid-cols-5 gap-8">
+        <div class="lg:col-span-2 space-y-6">
+          <div class="reveal stagger-1 glow-border card-hover p-6 flex items-start gap-4"><div class="w-12 h-12 shrink-0 rounded-2xl bg-neon-cyan/10 flex items-center justify-center"><i data-lucide="mail" class="w-5 h-5 text-neon-cyan"></i></div><div><h4 class="font-bold mb-1">Email</h4><p class="text-neutral-500 text-sm">hello@nexusdev.com</p></div></div>
+          <div class="reveal stagger-2 glow-border card-hover p-6 flex items-start gap-4"><div class="w-12 h-12 shrink-0 rounded-2xl bg-neon-purple/10 flex items-center justify-center"><i data-lucide="map-pin" class="w-5 h-5 text-neon-purple"></i></div><div><h4 class="font-bold mb-1">Location</h4><p class="text-neutral-500 text-sm">San Francisco, CA</p></div></div>
+          <div class="reveal stagger-3 glow-border card-hover p-6 flex items-start gap-4"><div class="w-12 h-12 shrink-0 rounded-2xl bg-neon-pink/10 flex items-center justify-center"><i data-lucide="clock" class="w-5 h-5 text-neon-pink"></i></div><div><h4 class="font-bold mb-1">Availability</h4><p class="text-neutral-500 text-sm">Open for freelance projects</p></div></div>
+          <div class="reveal stagger-4 flex items-center gap-3 pt-2">
+            <a href="#" class="w-12 h-12 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 hover:bg-neon-cyan/5 transition-all"><i data-lucide="github" class="w-5 h-5"></i></a>
+            <a href="#" class="w-12 h-12 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 hover:bg-neon-cyan/5 transition-all"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+            <a href="#" class="w-12 h-12 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 hover:bg-neon-cyan/5 transition-all"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+          </div>
+        </div>
+        <form id="contact-form" class="reveal stagger-2 lg:col-span-3 glow-border p-8 space-y-6" onsubmit="handleContactSubmit(event)">
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Name</label><input type="text" id="contact-name" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 focus:bg-white/[0.07] transition-all"></div>
+            <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Email</label><input type="email" id="contact-email" required placeholder="john@example.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 focus:bg-white/[0.07] transition-all"></div>
+          </div>
+          <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Project Type</label><select id="contact-type" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-neon-cyan/40 transition-all appearance-none"><option value="General" class="bg-dark-800">General Inquiry</option><option value="Landing Page" class="bg-dark-800">Landing Page</option><option value="Web App" class="bg-dark-800">Web Application</option><option value="E-Commerce" class="bg-dark-800">E-Commerce</option><option value="Other" class="bg-dark-800">Other</option></select></div>
+          <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Message</label><textarea id="contact-message" rows="5" required placeholder="Tell me about your project..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 focus:bg-white/[0.07] transition-all resize-none"></textarea></div>
+          <button type="submit" id="contact-submit-btn" class="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_40px_rgba(0,240,255,0.3)] transition-all"><i data-lucide="send" class="w-4 h-4"></i> Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative z-10 border-t border-white/5 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-xs">N</div><span class="font-display text-lg font-semibold">NEXUS</span></a>
+      <p class="text-neutral-600 text-sm">© 2025 NEXUS Portfolio.</p>
+      <div class="flex items-center gap-4">
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="github" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </footer>
+  <div id="toast" class="toast flex items-center gap-3"><div id="toast-icon" class="w-8 h-8 rounded-lg flex items-center justify-center"></div><span id="toast-text" class="text-sm font-medium"></span></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Pre-fill if logged in
+    window.addEventListener('authStateChanged', () => {
+      if (window.currentUser) {
+        const nameEl = document.getElementById('contact-name');
+        const emailEl = document.getElementById('contact-email');
+        if (nameEl && !nameEl.value) nameEl.value = window.currentUser.displayName || '';
+        if (emailEl && !emailEl.value) emailEl.value = window.currentUser.email || '';
+      }
+    });
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('contact-submit-btn');
+      btn.innerHTML = '<svg class="spin w-5 h-5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 70"/></svg> Sending...';
+      btn.disabled = true;
+
+      const data = {
+        name: document.getElementById('contact-name').value.trim(),
+        email: document.getElementById('contact-email').value.trim(),
+        projectType: document.getElementById('contact-type').value,
+        message: document.getElementById('contact-message').value.trim(),
+        read: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      db.collection('messages').add(data)
+        .then(() => {
+          showToast('Message sent successfully! I\'ll get back to you soon.', 'success');
+          e.target.reset();
+          // Re-clear prefill
+          if (window.currentUser) {
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-email').value = '';
+          }
+        })
+        .catch(err => showToast('Failed to send: ' + err.message, 'error'))
+        .finally(() => {
+          btn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Send Message';
+          btn.disabled = false;
+          lucide.createIcons();
+        });
+    }
+  </script>
+</body>
+</html>

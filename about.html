@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — NEXUS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Oswald','sans-serif']},colors:{neon:{cyan:'#00F0FF',purple:'#A855F7',pink:'#EC4899',blue:'#3B82F6'},dark:{900:'#030712',800:'#0A0F1E',700:'#111827',600:'#1E293B'}}}}}</script>
+</head>
+<body class="noise grid-bg">
+  <canvas id="particles-canvas"></canvas>
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-sm">N</div><span class="site-name font-display text-xl font-semibold tracking-tight">NEXUS</span></a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Home</a>
+        <a href="about.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">About</a>
+        <a href="creations.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Creations</a>
+        <a href="skills.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Skills</a>
+        <a href="contact.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Contact</a>
+      </div>
+      <div id="nav-actions" class="flex items-center gap-3"></div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-6 space-y-3">
+      <a href="index.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Home</a>
+      <a href="about.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">About</a>
+      <a href="creations.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Creations</a>
+      <a href="skills.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Skills</a>
+      <a href="contact.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Contact</a>
+    </div>
+  </nav>
+
+  <div id="auth-modal" class="modal-overlay" onclick="closeAuthModal(event)">
+    <div class="modal-content w-full max-w-md mx-4 glow-border p-8" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6"><h3 class="font-display text-2xl font-bold uppercase tracking-tight">Account</h3><button onclick="closeAuthModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white transition-all"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="flex gap-2 p-1 rounded-xl bg-white/5 mb-6"><button class="auth-tab active-tab flex-1" data-tab="login" onclick="switchAuthTab('login')">Sign In</button><button class="auth-tab flex-1" data-tab="signup" onclick="switchAuthTab('signup')">Sign Up</button></div>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <div id="auth-signup-fields" class="hidden"><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Full Name</label><input type="text" id="auth-name" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Email</label><input type="email" id="auth-email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Password</label><input type="password" id="auth-password" required minlength="6" placeholder="Min 6 characters" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <p id="auth-error" class="text-red-400 text-sm min-h-[1.25rem]"></p>
+        <button type="submit" id="auth-submit-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <section class="page-section relative z-10 py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal-left relative">
+          <div class="relative aspect-square max-w-md mx-auto">
+            <div class="absolute inset-0 rounded-full border border-neon-cyan/10 animate-[spin_20s_linear_infinite]"></div>
+            <div class="absolute inset-6 rounded-full border border-neon-purple/10 animate-[spin_15s_linear_infinite_reverse]"></div>
+            <div class="absolute inset-12 rounded-full border border-neon-pink/10 animate-[spin_10s_linear_infinite]"></div>
+            <div class="absolute inset-20 rounded-3xl overflow-hidden border border-white/10 scanline">
+              <img src="https://picsum.photos/seed/ai-dev-portrait-v5/500/500.jpg" alt="Developer" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-dark-900/80 via-transparent to-transparent"></div>
+            </div>
+            <div class="absolute top-8 right-0 px-3 py-1.5 rounded-lg bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan text-xs font-bold float" id="years-badge">0+ Years</div>
+            <div class="absolute bottom-12 left-0 px-3 py-1.5 rounded-lg bg-neon-purple/10 border border-neon-purple/20 text-neon-purple text-xs font-bold float-delay"><span class="live-project-count">0</span>+ Projects</div>
+          </div>
+        </div>
+        <div class="reveal-right">
+          <span class="text-xs font-bold tracking-[0.2em] uppercase text-neon-cyan mb-4 block">About Me</span>
+          <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-tight uppercase leading-[0.95] mb-6">Crafting The <span class="glow-text">Future</span> Of Web</h2>
+          <p id="about-bio-1" class="text-neutral-400 leading-relaxed mb-6">I'm a passionate web developer who merges cutting-edge AI technology with beautiful, functional design. Every project I create is an exploration of what happens when creativity meets intelligent code.</p>
+          <p id="about-bio-2" class="text-neutral-500 leading-relaxed mb-8">From responsive interfaces to complex interactive experiences, I build websites that don't just look stunning — they think, adapt, and evolve.</p>
+          <div class="grid grid-cols-3 gap-6 mb-8">
+            <div class="text-center p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+              <div class="text-3xl font-bold font-display text-neon-cyan" id="stat-projects" data-target="0">0+</div>
+              <div class="text-xs text-neutral-500 mt-1 uppercase tracking-wider">Projects</div>
+              <div class="text-[10px] text-neon-cyan/40 mt-0.5">LIVE</div>
+            </div>
+            <div class="text-center p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+              <div class="text-3xl font-bold font-display text-neon-purple" id="stat-clients" data-target="0">0+</div>
+              <div class="text-xs text-neutral-500 mt-1 uppercase tracking-wider">Clients</div>
+            </div>
+            <div class="text-center p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+              <div class="text-3xl font-bold font-display text-neon-pink" id="stat-years" data-target="0">0+</div>
+              <div class="text-xs text-neutral-500 mt-1 uppercase tracking-wider">Years</div>
+            </div>
+          </div>
+          <a href="creations.html" class="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_40px_rgba(0,240,255,0.3)] transition-all">See My Work <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative z-10 py-24 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-neon-cyan mb-4 block">Journey</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-tight uppercase leading-[0.95]">My <span class="glow-text">Timeline</span></h2>
+      </div>
+      <div class="relative">
+        <div class="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-neon-cyan/30 via-neon-purple/30 to-transparent"></div>
+        <div class="reveal stagger-1 relative pl-16 pb-12"><div class="absolute left-3.5 top-1 w-5 h-5 rounded-full bg-dark-900 border-2 border-neon-cyan"></div><span class="text-xs font-bold text-neon-cyan uppercase tracking-wider">2024 — Present</span><h3 class="font-display text-xl font-bold uppercase mt-2 mb-2">Senior Web Developer</h3><p class="text-neutral-500 text-sm leading-relaxed">Leading AI-integrated web projects for enterprise clients. Building next-gen digital experiences with cutting-edge frameworks.</p></div>
+        <div class="reveal stagger-2 relative pl-16 pb-12"><div class="absolute left-3.5 top-1 w-5 h-5 rounded-full bg-dark-900 border-2 border-neon-purple"></div><span class="text-xs font-bold text-neon-purple uppercase tracking-wider">2022 — 2024</span><h3 class="font-display text-xl font-bold uppercase mt-2 mb-2">Freelance Developer</h3><p class="text-neutral-500 text-sm leading-relaxed">Built 30+ websites for startups and businesses worldwide. Specialized in React ecosystems and headless CMS solutions.</p></div>
+        <div class="reveal stagger-3 relative pl-16 pb-12"><div class="absolute left-3.5 top-1 w-5 h-5 rounded-full bg-dark-900 border-2 border-neon-pink"></div><span class="text-xs font-bold text-neon-pink uppercase tracking-wider">2021 — 2022</span><h3 class="font-display text-xl font-bold uppercase mt-2 mb-2">Frontend Developer</h3><p class="text-neutral-500 text-sm leading-relaxed">Crafted responsive UIs and interactive dashboards. Deep-dived into animation libraries and performance optimization.</p></div>
+        <div class="reveal stagger-4 relative pl-16"><div class="absolute left-3.5 top-1 w-5 h-5 rounded-full bg-dark-900 border-2 border-neon-blue"></div><span class="text-xs font-bold text-neon-blue uppercase tracking-wider">2020 — 2021</span><h3 class="font-display text-xl font-bold uppercase mt-2 mb-2">Started Coding</h3><p class="text-neutral-500 text-sm leading-relaxed">Began my journey with HTML, CSS, and JavaScript. Fell in love with turning ideas into interactive web experiences.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative z-10 border-t border-white/5 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-xs">N</div><span class="site-name font-display text-lg font-semibold">NEXUS</span></a>
+      <p class="text-neutral-600 text-sm">© 2025 NEXUS Portfolio.</p>
+      <div class="flex items-center gap-4">
+        <a href="#" class="social-github w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="github" class="w-4 h-4"></i></a>
+        <a href="#" class="social-twitter w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+        <a href="#" class="social-linkedin w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </footer>
+  <div id="toast" class="toast flex items-center gap-3"><div id="toast-icon" class="w-8 h-8 rounded-lg flex items-center justify-center"></div><span id="toast-text" class="text-sm font-medium"></span></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/site-data.js"></script>
+</body>
+</html>

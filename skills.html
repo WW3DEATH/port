@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills — NEXUS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],display:['Oswald','sans-serif']},colors:{neon:{cyan:'#00F0FF',purple:'#A855F7',pink:'#EC4899',blue:'#3B82F6'},dark:{900:'#030712',800:'#0A0F1E',700:'#111827',600:'#1E293B'}}}}}</script>
+</head>
+<body class="noise grid-bg">
+  <canvas id="particles-canvas"></canvas>
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-sm">N</div><span class="font-display text-xl font-semibold tracking-tight">NEXUS</span></a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Home</a>
+        <a href="about.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">About</a>
+        <a href="creations.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Creations</a>
+        <a href="skills.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Skills</a>
+        <a href="contact.html" class="nav-link text-sm text-neutral-400 hover:text-neon-cyan transition-colors">Contact</a>
+      </div>
+      <div id="nav-actions" class="flex items-center gap-3"></div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-6 space-y-3">
+      <a href="index.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Home</a>
+      <a href="about.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">About</a>
+      <a href="creations.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Creations</a>
+      <a href="skills.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Skills</a>
+      <a href="contact.html" class="block py-2 text-sm text-neutral-400 hover:text-neon-cyan">Contact</a>
+    </div>
+  </nav>
+
+  <div id="auth-modal" class="modal-overlay" onclick="closeAuthModal(event)">
+    <div class="modal-content w-full max-w-md mx-4 glow-border p-8" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6"><h3 class="font-display text-2xl font-bold uppercase tracking-tight">Account</h3><button onclick="closeAuthModal()" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white transition-all"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+      <div class="flex gap-2 p-1 rounded-xl bg-white/5 mb-6"><button class="auth-tab active-tab flex-1" data-tab="login" onclick="switchAuthTab('login')">Sign In</button><button class="auth-tab flex-1" data-tab="signup" onclick="switchAuthTab('signup')">Sign Up</button></div>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <div id="auth-signup-fields" class="hidden"><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Full Name</label><input type="text" id="auth-name" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Email</label><input type="email" id="auth-email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <div><label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">Password</label><input type="password" id="auth-password" required minlength="6" placeholder="Min 6 characters" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-neon-cyan/40 transition-all"></div>
+        <p id="auth-error" class="text-red-400 text-sm min-h-[1.25rem]"></p>
+        <button type="submit" id="auth-submit-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <section class="page-section relative z-10 py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-neon-cyan mb-4 block">Expertise</span>
+        <h2 class="font-display text-4xl sm:text-6xl font-bold tracking-tight uppercase leading-[0.95] mb-4">Tech <span class="glow-text">Stack</span></h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div class="reveal stagger-1 glow-border card-hover p-6 group"><div class="w-12 h-12 rounded-2xl bg-neon-cyan/10 flex items-center justify-center mb-4 group-hover:bg-neon-cyan/20 transition-colors"><i data-lucide="code-2" class="w-6 h-6 text-neon-cyan"></i></div><h3 class="font-bold text-lg mb-2">Frontend</h3><p class="text-neutral-500 text-sm leading-relaxed mb-4">React, Next.js, Vue, Tailwind CSS, TypeScript</p><div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="skill-bar h-full rounded-full bg-gradient-to-r from-neon-cyan to-neon-blue" data-width="95%" style="width:0%"></div></div></div>
+        <div class="reveal stagger-2 glow-border card-hover p-6 group"><div class="w-12 h-12 rounded-2xl bg-neon-purple/10 flex items-center justify-center mb-4 group-hover:bg-neon-purple/20 transition-colors"><i data-lucide="server" class="w-6 h-6 text-neon-purple"></i></div><h3 class="font-bold text-lg mb-2">Backend</h3><p class="text-neutral-500 text-sm leading-relaxed mb-4">Node.js, Python, PostgreSQL, MongoDB, REST APIs</p><div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="skill-bar h-full rounded-full bg-gradient-to-r from-neon-purple to-neon-pink" data-width="85%" style="width:0%"></div></div></div>
+        <div class="reveal stagger-3 glow-border card-hover p-6 group"><div class="w-12 h-12 rounded-2xl bg-neon-pink/10 flex items-center justify-center mb-4 group-hover:bg-neon-pink/20 transition-colors"><i data-lucide="brain" class="w-6 h-6 text-neon-pink"></i></div><h3 class="font-bold text-lg mb-2">AI / ML</h3><p class="text-neutral-500 text-sm leading-relaxed mb-4">OpenAI, TensorFlow, LangChain, RAG, Embeddings</p><div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="skill-bar h-full rounded-full bg-gradient-to-r from-neon-pink to-neon-cyan" data-width="80%" style="width:0%"></div></div></div>
+        <div class="reveal stagger-4 glow-border card-hover p-6 group"><div class="w-12 h-12 rounded-2xl bg-neon-blue/10 flex items-center justify-center mb-4 group-hover:bg-neon-blue/20 transition-colors"><i data-lucide="figma" class="w-6 h-6 text-neon-blue"></i></div><h3 class="font-bold text-lg mb-2">Design</h3><p class="text-neutral-500 text-sm leading-relaxed mb-4">Figma, Adobe Suite, Framer, Motion Design</p><div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="skill-bar h-full rounded-full bg-gradient-to-r from-neon-blue to-neon-purple" data-width="90%" style="width:0%"></div></div></div>
+      </div>
+      <div class="reveal text-center mb-12"><h3 class="font-display text-2xl font-bold uppercase tracking-tight">Tools I <span class="glow-text">Use</span></h3></div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div class="reveal stagger-1 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">⚛️</div><span class="text-xs font-semibold text-neutral-400">React</span></div>
+        <div class="reveal stagger-1 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">▲</div><span class="text-xs font-semibold text-neutral-400">Next.js</span></div>
+        <div class="reveal stagger-2 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🌊</div><span class="text-xs font-semibold text-neutral-400">Tailwind</span></div>
+        <div class="reveal stagger-2 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🟢</div><span class="text-xs font-semibold text-neutral-400">Node.js</span></div>
+        <div class="reveal stagger-3 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🐍</div><span class="text-xs font-semibold text-neutral-400">Python</span></div>
+        <div class="reveal stagger-3 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🗄️</div><span class="text-xs font-semibold text-neutral-400">PostgreSQL</span></div>
+        <div class="reveal stagger-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🍃</div><span class="text-xs font-semibold text-neutral-400">MongoDB</span></div>
+        <div class="reveal stagger-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🎨</div><span class="text-xs font-semibold text-neutral-400">Figma</span></div>
+        <div class="reveal stagger-5 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🤖</div><span class="text-xs font-semibold text-neutral-400">OpenAI</span></div>
+        <div class="reveal stagger-5 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🐳</div><span class="text-xs font-semibold text-neutral-400">Docker</span></div>
+        <div class="reveal stagger-6 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">☁️</div><span class="text-xs font-semibold text-neutral-400">Vercel</span></div>
+        <div class="reveal stagger-6 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center card-hover"><div class="text-2xl mb-2">🔥</div><span class="text-xs font-semibold text-neutral-400">Firebase</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative z-10 border-t border-white/5 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-bold text-xs">N</div><span class="font-display text-lg font-semibold">NEXUS</span></a>
+      <p class="text-neutral-600 text-sm">© 2025 NEXUS Portfolio.</p>
+      <div class="flex items-center gap-4">
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="github" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-neutral-500 hover:text-neon-cyan hover:border-neon-cyan/30 transition-all"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </footer>
+  <div id="toast" class="toast flex items-center gap-3"><div id="toast-icon" class="w-8 h-8 rounded-lg flex items-center justify-center"></div><span id="toast-text" class="text-sm font-medium"></span></div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
